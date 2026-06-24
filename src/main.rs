@@ -1,4 +1,10 @@
 use sqlx::postgres::PgPoolOptions;
+use tokio::net::TcpListener;
+
+use crate::router::AppState;
+
+mod router;
+pub mod routes;
 
 #[tokio::main]
 async fn main() {
@@ -13,4 +19,11 @@ async fn main() {
         .await
         .unwrap();
     sqlx::migrate!().run(&pool).await.unwrap();
+    let app = router::app(AppState { db: pool });
+    let listener = TcpListener::bind("0.0.0.0:5173")
+        .await
+        .expect("Failed to bind service to port");
+    axum::serve(listener, app)
+        .await
+        .expect("There was an error serving the app");
 }
