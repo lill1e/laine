@@ -1,0 +1,13 @@
+[package]
+name = "laine"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.102"
+axum = "0.8.9"
+dotenvy = "0.15.7"
+serde = { version = "1.0.228", features = ["derive"] }
+sqlx = { version = "0.9.0", features = ["macros", "migrate", "postgres", "runtime-tokio", "time"] }
+time = "0.3.47"
+tokio = { version = "1.52.1", features = ["rt-multi-thread"] }
