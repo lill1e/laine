@@ -1,0 +1,19 @@
+.table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  &:not(:first-child) {
+    margin-top: 10px;
+  }
+
+  > tbody > tr {
+    > td,
+    > th {
+      border: 1px solid #bbb;
+      width: max-content;
+    }
+    &:nth-child(even) {
+      background: rgba(0, 0, 0, 0.04);
+    }
+  }
+}

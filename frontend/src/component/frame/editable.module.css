@@ -1,0 +1,40 @@
+.input {
+  width: 16px;
+  border: 0;
+  border-bottom: 1px solid #1f2937;
+  text-align: inherit;
+  background: transparent;
+
+  &.hide {
+    display: none;
+  }
+}
+
+.input:focus-visible {
+  outline: 0;
+}
+
+.totalContainer {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+
+  > .checkboxContainer {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    flex: 1;
+
+    > input {
+      margin: 0;
+    }
+
+    > label {
+      font-size: 5pt;
+    }
+  }
+
+  > strong {
+    line-height: 12px;
+  }
+}

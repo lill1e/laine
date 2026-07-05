@@ -1,0 +1,60 @@
+.label {
+  font-size: 10pt;
+  margin-top: 10px;
+  margin-bottom: 3px;
+  font-weight: normal;
+}
+
+.playerCell {
+  display: flex;
+  flex-flow: row;
+  padding: 10px;
+
+  > .actions {
+    margin-right: 5px;
+    button {
+      background: transparent;
+      padding: 0;
+
+      > svg {
+        width: 1em;
+        height: 1em;
+      }
+    }
+  }
+
+  > .player {
+    display: flex;
+    flex-flow: column;
+  }
+}
+
+.nickname {
+  background: transparent;
+  border: 0;
+  outline: none;
+  border-bottom: 1px solid black;
+  min-width: 0;
+  margin-top: 5px;
+  font-size: 7pt;
+  width: 100%;
+}
+
+.date {
+  font-family: inherit;
+}
+
+.newPlayerButton {
+  border: 0;
+  font-size: 16pt;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+
+  &.noPlayers {
+    border-radius: 5px;
+  }
+}

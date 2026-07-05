@@ -1,0 +1,46 @@
+.header {
+  display: flex;
+  width: 100%;
+
+  > .actions {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    color: #fff;
+
+    > .edit {
+      padding: 3px;
+    }
+  }
+}
+
+.container:not(:first-child) {
+  margin-top: 10px;
+}
+
+.playerCell {
+  margin: 0 auto;
+  width: 85px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+}
+
+.playerCellName {
+  font-weight: 700;
+  font-size: 13pt;
+}
+
+.playerCellAs {
+  font-size: 10pt;
+  font-weight: normal;
+}
+
+.row {
+  display: flex;
+
+  &:nth-child(odd) {
+    background: rgba(0, 0, 0, 0.02);
+  }
+}

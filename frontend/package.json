@@ -1,0 +1,30 @@
+{
+  "name": "frontend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "fmt": "oxfmt",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "tsc": "tsc -b"
+  },
+  "dependencies": {
+    "@solidjs/router": "^0.16.1",
+    "lucide-solid": "^1.23.0",
+    "solid-js": "^1.9.12"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.3",
+    "eslint-plugin-solid": "^0.14.5",
+    "oxfmt": "^0.56.0",
+    "oxlint": "^1.71.0",
+    "oxlint-tsgolint": "^0.23.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.0.12",
+    "vite-plugin-solid": "^2.11.12"
+  }
+}
