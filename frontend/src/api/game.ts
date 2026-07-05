@@ -1,4 +1,5 @@
 import { frameTotal } from "@/util/frames";
+import { get } from "./core";
 import { type APIFrame, Frame } from "./frame";
 import { Player } from "./player";
 
@@ -13,6 +14,11 @@ interface APIEntry {
   username: string;
   alias: string;
   frames: APIFrame[];
+}
+
+export async function getGames(): Promise<Game[]> {
+  const response: APIGame[] = await get(`/games/all`);
+  return Object.values(response).map((x) => new Game(x));
 }
 
 export class Game {
@@ -41,17 +47,20 @@ export class Entry {
           rollOne: api.roll_one,
           rollTwo: api.roll_two,
           extraRoll: api.extra_roll,
+          split: api.split,
         },
         prev?.total ?? 0,
         next && {
           rollOne: next.roll_one,
           rollTwo: next.roll_two,
           extraRoll: next.extra_roll,
+          split: next.split,
         },
         nextNext && {
           rollOne: nextNext.roll_one,
           rollTwo: nextNext.roll_two,
           extraRoll: nextNext.extra_roll,
+          split: nextNext.split,
         },
       );
 

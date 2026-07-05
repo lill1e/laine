@@ -1,9 +1,9 @@
+import { createAsync } from "@solidjs/router";
 import { For } from "solid-js";
-import { Game } from "@/api/game";
+import { getGames } from "@/api/game";
 import { GameCard } from "@/component/game/card";
-import data from "@/games.json";
 
 export function GamesPage() {
-  const games = [new Game(data["1"])];
-  return <For each={games}>{(game) => <GameCard game={game} />}</For>;
+  const games = createAsync(async () => await getGames());
+  return <For each={games.latest}>{(game) => <GameCard game={game} />}</For>;
 }
