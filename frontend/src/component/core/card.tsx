@@ -12,3 +12,7 @@ export function CardHeader(props: ParentProps) {
 export function CardBody(props: ParentProps) {
   return <div class={styles.body}>{props.children}</div>;
 }
+
+export function CardActions(props: ParentProps) {
+  return <div class={styles.actions}>{props.children}</div>;
+}

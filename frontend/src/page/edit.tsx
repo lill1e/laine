@@ -2,7 +2,7 @@ import { useParams } from "@solidjs/router";
 import { createStore } from "solid-js/store";
 import { Game } from "@/api/game";
 import { Button } from "@/component/core/button";
-import { Card, CardBody, CardHeader } from "@/component/core/card";
+import { Card, CardActions, CardBody, CardHeader } from "@/component/core/card";
 import { GameEditor } from "@/component/game/edit/editor";
 import data from "@/games.json";
 import { type EditableGame, toEditableGame } from "@/util/edit";
@@ -10,7 +10,7 @@ import { type EditableGame, toEditableGame } from "@/util/edit";
 const def = new Game(data["1"]);
 
 export function EditPage() {
-  const params = useParams();
+  const _params = useParams();
   const [game, setGame] = createStore<EditableGame>(toEditableGame(def));
 
   const submit = () => {
@@ -23,10 +23,12 @@ export function EditPage() {
         <CardHeader>Editing Game</CardHeader>
         <CardBody>
           <GameEditor game={game} setGame={setGame} />
+        </CardBody>
+        <CardActions>
           <Button kind="primary" onClick={submit}>
             Submit
           </Button>
-        </CardBody>
+        </CardActions>
       </Card>
     </>
   );

@@ -27,3 +27,14 @@
   flex-flow: column;
   padding: 10px;
 }
+
+.actions {
+  display: flex;
+  margin-top: 10px;
+  justify-content: flex-end;
+  padding: 10px;
+
+  > button {
+    margin-left: 5px;
+  }
+}
