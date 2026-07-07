@@ -1,19 +1,39 @@
+@import "@/index.css";
+
 .table {
-  width: 100%;
-  table-layout: fixed;
   border-collapse: collapse;
+  font-size: 12px;
+  font-weight: lighter;
+
+  --row-separator: var(--gray-1);
+
   &:not(:first-child) {
     margin-top: 10px;
+  }
+
+  > thead > tr > th {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 11px;
+    border-bottom: 1px solid #dcdddf;
+    border-top: 1px solid #dcdddf;
+    color: #48494a;
+    height: 24px;
+    padding: 4px 4px 3px;
   }
 
   > tbody > tr {
     > td,
     > th {
-      border: 1px solid #bbb;
-      width: max-content;
+      border-bottom: 1px solid var(--row-separator);
+      width: 100%;
+      padding-left: 6px;
+      padding-right: 6px;
+      color: #6c6d6f;
     }
+
     &:nth-child(even) {
-      background: rgba(0, 0, 0, 0.04);
+      background: rgba(0, 0, 0, 0.02);
     }
   }
 }

@@ -1,0 +1,12 @@
+@import "@/index.css";
+
+.input {
+  background: #fff;
+  border: 1px solid var(--gray-1);
+  font-family: inherit;
+  border-radius: 3px;
+
+  &:disabled {
+    border-color: #898989;
+  }
+}

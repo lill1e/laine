@@ -1,5 +1,4 @@
 import { useNavigate } from "@solidjs/router";
-import { Pencil } from "lucide-solid";
 import type { Game } from "@/api/game";
 import { Button } from "@/component/core/button";
 import { Card, CardBody, CardHeader } from "@/component/core/card";
@@ -23,8 +22,7 @@ export function GameCard(props: Props) {
         <div class={styles.header}>
           <span>{dtf.format(new Date(props.game.date))}</span>
           <div class={styles.actions}>
-            <Button class={styles.edit} kind="default" onClick={() => navigate(`/edit/TEMP`)}>
-              <Pencil />
+            <Button class={styles.edit} kind="link" onClick={() => navigate(`/edit/TEMP`)}>
               Edit
             </Button>
           </div>

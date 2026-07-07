@@ -2,13 +2,10 @@
   display: grid;
   grid-template-columns: 1fr;
   aspect-ratio: 1;
-  padding: 2px;
-  row-gap: 12px;
-  min-width: calc(3ch + 8px);
+  min-width: calc(3ch + 3px);
 
   &.hasRollTwo {
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 5px;
 
     > .one {
       justify-content: flex-start;
@@ -18,7 +15,6 @@
 
   &.hasExtra {
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 2px;
 
     > .two {
       justify-content: center;

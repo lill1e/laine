@@ -9,8 +9,16 @@ export function CardHeader(props: ParentProps) {
   return <header class={styles.header}>{props.children}</header>;
 }
 
-export function CardBody(props: ParentProps) {
-  return <div class={styles.body}>{props.children}</div>;
+interface CardBodyProps extends ParentProps {
+  flex?: boolean;
+}
+
+export function CardBody(props: CardBodyProps) {
+  return (
+    <div class={[styles.body, props.flex && styles.flex].filter(Boolean).join(" ")}>
+      {props.children}
+    </div>
+  );
 }
 
 export function CardActions(props: ParentProps) {

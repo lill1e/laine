@@ -1,4 +1,4 @@
 /target
 node_modules
-frontend/src/games.json
 .env
+frontend/dist

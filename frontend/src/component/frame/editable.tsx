@@ -1,4 +1,5 @@
 import type { FrameLike } from "@/api/frame.ts";
+import { Checkbox } from "@/component/core/checkbox.tsx";
 import { FrameBase } from "./base.tsx";
 import styles from "./editable.module.css";
 
@@ -36,14 +37,11 @@ function Total(props: TotalProps) {
     <div class={styles.totalContainer}>
       <div class={styles.checkboxContainer}>
         <label>split?</label>
-        <input
+        <Checkbox
           tabindex={-1}
           class={styles.checkbox}
-          type="checkbox"
           checked={props.split}
-          onChange={(event: Event & { currentTarget: HTMLInputElement }) =>
-            props.onSetSplit?.(event.currentTarget.checked)
-          }
+          setChecked={props.onSetSplit}
         />
       </div>
       <strong>{props.total ?? "0"}</strong>

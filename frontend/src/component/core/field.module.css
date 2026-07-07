@@ -1,0 +1,18 @@
+.field {
+  display: flex;
+  align-items: center;
+
+  > input {
+    display: inline-block;
+  }
+}
+
+.label {
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 10pt;
+
+  &.disabled {
+    color: #898989;
+  }
+}

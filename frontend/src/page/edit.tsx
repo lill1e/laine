@@ -1,17 +1,20 @@
-import { useParams } from "@solidjs/router";
+import { createAsync } from "@solidjs/router";
+import { createEffect, Show } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Game } from "@/api/game";
+import { getGames } from "@/api/game";
 import { Button } from "@/component/core/button";
 import { Card, CardActions, CardBody, CardHeader } from "@/component/core/card";
 import { GameEditor } from "@/component/game/edit/editor";
-import data from "@/games.json";
 import { type EditableGame, toEditableGame } from "@/util/edit";
 
-const def = new Game(data["1"]);
-
 export function EditPage() {
-  const _params = useParams();
-  const [game, setGame] = createStore<EditableGame>(toEditableGame(def));
+  const games = createAsync(async () => await getGames());
+  const [game, setGame] = createStore<EditableGame | {}>({});
+  createEffect(() => {
+    if (games()) {
+      setGame(toEditableGame(games()![0]));
+    }
+  });
 
   const submit = () => {
     console.log(game);
@@ -21,14 +24,20 @@ export function EditPage() {
     <>
       <Card>
         <CardHeader>Editing Game</CardHeader>
-        <CardBody>
-          <GameEditor game={game} setGame={setGame} />
-        </CardBody>
-        <CardActions>
-          <Button kind="primary" onClick={submit}>
-            Submit
-          </Button>
-        </CardActions>
+        <Show when={"entries" in game && game}>
+          {(game) => (
+            <>
+              <CardBody>
+                <GameEditor game={game()} setGame={setGame} />
+              </CardBody>
+              <CardActions>
+                <Button kind="primary" onClick={submit}>
+                  Submit
+                </Button>
+              </CardActions>
+            </>
+          )}
+        </Show>
       </Card>
     </>
   );

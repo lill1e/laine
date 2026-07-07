@@ -61,7 +61,7 @@ function stringifyFrameNumber(value: number): string {
     case 10:
       return "X";
     case 0:
-      return "-";
+      return "–";
     default:
       return value.toString();
   }

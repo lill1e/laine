@@ -12,9 +12,13 @@ export function DisplayFrame(props: Props) {
     <FrameBase
       frame={props.frame}
       total={props.total}
-      renderRollOne={(value) => <span class={props.frame.split ? styles.split : ""}>{value}</span>}
-      renderRollTwo={(value) => <span>{value}</span>}
-      renderExtraRoll={(value) => <span>{value}</span>}
+      renderRollOne={(value) => (
+        <span class={[styles.span, props.frame.split && styles.split].filter(Boolean).join(" ")}>
+          {value}
+        </span>
+      )}
+      renderRollTwo={(value) => <span class={styles.span}>{value}</span>}
+      renderExtraRoll={(value) => <span class={styles.span}>{value}</span>}
       renderTotal={(value) => <span class={styles.total}>{value}</span>}
     />
   );

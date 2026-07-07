@@ -4,7 +4,7 @@ import styles from "./button.module.css";
 interface Props extends ParentProps {
   class?: string;
   onClick?: () => void;
-  kind?: "primary" | "default";
+  kind?: "primary" | "default" | "link";
 }
 
 export function Button(props: Props) {

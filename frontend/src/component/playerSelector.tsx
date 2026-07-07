@@ -1,6 +1,6 @@
 import { For } from "solid-js";
 import { Player } from "@/api/player";
-import styles from "./playerSelector.module.css";
+import { Select } from "./core/select";
 
 type Props = {
   class?: string;
@@ -16,11 +16,11 @@ export function PlayerSelector(props: Props) {
 
   return (
     <>
-      <select class={[props.class ?? "", styles.select].join(" ")} onChange={onChange}>
+      <Select onChange={onChange}>
         <For each={Player.getAllPlayers()}>
           {(player) => <option value={player.id}>{player.username}</option>}
         </For>
-      </select>
+      </Select>
     </>
   );
 }

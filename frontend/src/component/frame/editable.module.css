@@ -1,9 +1,12 @@
+@import "@/index.css";
+
 .input {
-  width: 16px;
+  width: 12px;
   border: 0;
-  border-bottom: 1px solid #1f2937;
+  border-bottom: 1px solid var(--gray-2);
   text-align: inherit;
   background: transparent;
+  margin-right: 1px;
 
   &.hide {
     display: none;
@@ -20,17 +23,20 @@
   align-items: flex-end;
 
   > .checkboxContainer {
+    margin-top: 5px;
+    margin-right: 5px;
     display: flex;
     flex-flow: column;
     align-items: flex-start;
     flex: 1;
 
-    > input {
+    > .checkbox {
       margin: 0;
+      width: 12px;
     }
 
     > label {
-      font-size: 5pt;
+      font-size: 5px;
     }
   }
 

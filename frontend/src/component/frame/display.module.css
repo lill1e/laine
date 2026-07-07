@@ -1,11 +1,16 @@
 .total {
-  font-weight: 600;
+  font-weight: normal;
+  padding: 1px;
 }
 
 .split {
   height: fit-content;
   background-color: red;
+  outline: 1px solid red;
   border-radius: 50%;
   color: #fff;
-  padding: 3px;
+}
+
+.span {
+  padding: 1px;
 }
