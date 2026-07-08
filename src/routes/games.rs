@@ -116,7 +116,7 @@ async fn get_games_by_date(
     Path(date): Path<NaiveDate>,
 ) -> Result<Json<HashMap<i32, GameData>>, StatusCode> {
     Ok(Json(get_game_entries(
-        sqlx::query_as!(Game, "select * from game;")
+        sqlx::query_as!(Game, "select * from game where date = $1;", date)
             .fetch_all(&state.db)
             .await
             .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?,
