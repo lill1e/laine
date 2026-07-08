@@ -20,7 +20,7 @@ async fn main() {
         .unwrap();
     sqlx::migrate!().run(&pool).await.unwrap();
     let app = router::app(AppState { db: pool });
-    let listener = TcpListener::bind("0.0.0.0:5173")
+    let listener = TcpListener::bind("0.0.0.0:5174")
         .await
         .expect("Failed to bind service to port");
     axum::serve(listener, app)
