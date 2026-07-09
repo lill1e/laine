@@ -7,7 +7,14 @@ export function AdminPage() {
       <Card>
         <CardHeader>Admin tools</CardHeader>
         <CardBody>
-          <A href={"/new"}>Create a new game</A>
+          <ul>
+            <li>
+              <A href={"/new"}>Create a new game</A>
+            </li>
+            <li>
+              <A href={"/invite"}>Invite a new user</A>
+            </li>
+          </ul>
         </CardBody>
       </Card>
     </>

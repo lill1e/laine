@@ -1,6 +1,7 @@
 .field {
   display: flex;
   align-items: center;
+  gap: 3px;
 
   > input {
     display: inline-block;

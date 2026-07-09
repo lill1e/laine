@@ -26,3 +26,7 @@ main {
   --gray-2: #cbccce;
   --link: rgb(0, 102, 204);
 }
+
+a {
+  color: var(--link);
+}
