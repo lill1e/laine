@@ -22,7 +22,7 @@
 	{/snippet}
 	<Form {onsubmit}>
 		<Field>
-			<TextInput --style-width="100%" placeholder="Discord ID..." />
+			<TextInput placeholder="Discord ID..." />
 			<Button type="primary">Invite</Button>
 		</Field>
 	</Form>
