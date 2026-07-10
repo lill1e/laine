@@ -41,11 +41,15 @@
 
 	main {
 		display: flex;
-		flex-flow: row;
+		flex-flow: column;
 		justify-content: center;
-		padding-top: 10px;
-		padding-left: 10px;
-		padding-right: 10px;
 		gap: 5px;
+		padding-top: 10px;
+
+		@media screen and (min-width: 700px) {
+			padding-left: 10px;
+			padding-right: 10px;
+			flex-flow: row;
+		}
 	}
 </style>

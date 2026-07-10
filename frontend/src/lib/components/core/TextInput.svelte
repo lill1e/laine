@@ -5,10 +5,10 @@
 		value?: string;
 	}
 
-	let { type = 'default', placeholder, value = $bindable() }: Props = $props();
+	let { type = 'default', placeholder, value = $bindable(), ...rest }: Props = $props();
 </script>
 
-<input size="1" type="text" class={type} {placeholder} bind:value />
+<input size="1" type="text" class={type} {placeholder} bind:value {...rest} />
 
 <style>
 	input {
@@ -19,6 +19,11 @@
 		border: 1px solid var(--gray-2);
 		min-width: 100px;
 		display: inline-block;
+		width: 100%;
+
+		@media screen and (min-width: 700px) {
+			width: auto;
+		}
 
 		&.small {
 			height: 20px;

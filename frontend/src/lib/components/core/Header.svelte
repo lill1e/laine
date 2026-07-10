@@ -27,6 +27,7 @@
 		top: 0;
 		z-index: 10;
 		display: flex;
+		box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.3);
 	}
 
 	.logo-wrapper {
@@ -82,15 +83,32 @@
 		display: flex;
 		align-items: center;
 
+		&:hover > a {
+			color: #bbb;
+			&[aria-current='true']:not(:hover) {
+				border-bottom-color: transparent;
+			}
+		}
+
 		> a {
 			color: #fff;
-			margin-right: 15px;
+			padding-left: 10px;
+			padding-right: 10px;
 			font-size: 12px;
 			font-weight: 500;
 			text-decoration: none;
+			height: 100%;
+			display: flex;
+			align-items: center;
 
+			&:hover {
+				color: #fff;
+			}
+
+			&:hover,
 			&[aria-current='true'] {
-				font-weight: 900;
+				border-bottom: 4px solid #d00;
+				border-top: 4px solid transparent;
 			}
 		}
 	}

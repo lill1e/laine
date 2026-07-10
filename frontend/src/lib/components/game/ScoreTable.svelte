@@ -40,9 +40,9 @@
 <style>
 	table {
 		--row-separator: var(--gray-1);
-
+		display: block;
+		overflow-x: auto;
 		border-collapse: collapse;
-
 		font-size: 12px;
 	}
 

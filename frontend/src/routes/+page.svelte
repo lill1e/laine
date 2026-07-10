@@ -10,7 +10,7 @@
 	const { data }: PageProps = $props();
 </script>
 
-<CardColumn>
+<CardColumn --style-max-width="300px">
 	<Card>
 		{#snippet header()}
 			Filters...

@@ -31,9 +31,14 @@
 		flex-flow: column;
 		border-radius: 10px;
 		background: #fff;
-		width: 100%;
-		max-width: 700px;
+		width: 100vw;
 		flex-shrink: 0;
+		flex-grow: 1;
+
+		@media screen and (min-width: 700px) {
+			width: 100%;
+			max-width: 700px;
+		}
 	}
 
 	.header {
