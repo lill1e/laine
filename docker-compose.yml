@@ -3,7 +3,7 @@ services:
     image: postgres
     restart: always
     volumes:
-      - pgdata:/data/postgres
+      - pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgres
     ports:
