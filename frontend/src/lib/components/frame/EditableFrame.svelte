@@ -227,11 +227,11 @@
 
 	.split-container {
 		margin-top: 5px;
-		margin-right: 5px;
 		display: flex;
 		flex-flow: column;
 		align-items: flex-start;
 		flex: 1;
+		width: 0;
 
 		> p {
 			margin: 0;

@@ -1,6 +1,7 @@
 <script lang="ts" generics="P, A, F extends FrameLikeTotalled">
 	import type { FrameLikeTotalled } from '$lib/api/frame';
 	import type { Snippet } from 'svelte';
+	import Table from '$lib/components/core/Table.svelte';
 	interface Props<P, A, F> {
 		player: Snippet<[P, A, number]>;
 		frame: Snippet<[P, F, number, number]>;
@@ -14,7 +15,7 @@
 	const { player, frame, entries }: Props<P, A, F> = $props();
 </script>
 
-<table>
+<Table>
 	<thead>
 		<tr>
 			<th scope="col">Player</th>
@@ -35,44 +36,4 @@
 			</tr>
 		{/each}
 	</tbody>
-</table>
-
-<style>
-	table {
-		--row-separator: var(--gray-1);
-		display: block;
-		overflow-x: auto;
-		border-collapse: collapse;
-		font-size: 12px;
-	}
-
-	thead th {
-		text-transform: uppercase;
-		font-weight: 600;
-		font-size: 11px;
-		border-bottom: 1px solid #dcdddf;
-		border-top: 1px solid #dcdddf;
-		color: #48494a;
-		height: 24px;
-		padding: 4px 4px 3px;
-	}
-
-	tbody > tr > th {
-		width: 100%;
-	}
-
-	tbody > tr > td,
-	tbody > tr > th {
-		border-bottom: 1px solid var(--row-separator);
-		padding-left: 6px;
-		padding-right: 6px;
-		color: #6c6d6f;
-		width: 100%;
-	}
-
-	tr {
-		&:nth-child(even) {
-			background: rgba(0, 0, 0, 0.02);
-		}
-	}
-</style>
+</Table>

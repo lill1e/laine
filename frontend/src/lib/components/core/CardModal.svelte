@@ -3,6 +3,7 @@
 	import Card from './Card.svelte';
 	import Modal from './Modal.svelte';
 	import { X } from '@lucide/svelte';
+	import CardHeader from './CardHeader.svelte';
 
 	type Props = {
 		children: Snippet;
@@ -27,10 +28,10 @@
 
 <Modal bind:show>
 	<Card showActions={props.showActions}>
-		{#snippet header()}
+		<CardHeader>
 			{@render props.header()}
 			<button class="close-button" onclick={hide}><X /></button>
-		{/snippet}
+		</CardHeader>
 		{@render props.children()}
 		{#snippet actions()}
 			{#if props.showActions}

@@ -20,6 +20,7 @@
 	{#snippet header()}
 		Invite a user...
 	{/snippet}
+
 	<Form {onsubmit}>
 		<Field>
 			<TextInput placeholder="Discord ID..." />

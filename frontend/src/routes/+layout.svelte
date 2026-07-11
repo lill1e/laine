@@ -43,12 +43,8 @@
 		display: flex;
 		flex-flow: column;
 		justify-content: center;
-		gap: 5px;
-		padding-top: 10px;
 
 		@media screen and (min-width: 700px) {
-			padding-left: 10px;
-			padding-right: 10px;
 			flex-flow: row;
 		}
 	}

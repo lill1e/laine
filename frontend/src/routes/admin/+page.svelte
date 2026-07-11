@@ -2,6 +2,7 @@
 	import Button from '$lib/components/core/Button.svelte';
 	import Card from '$lib/components/core/Card.svelte';
 	import CardColumn from '$lib/components/core/CardColumn.svelte';
+	import CardHeader from '$lib/components/core/CardHeader.svelte';
 	import CreateModal from './CreateModal.svelte';
 	import InviteModal from './InviteModal.svelte';
 
@@ -11,9 +12,7 @@
 
 <CardColumn>
 	<Card>
-		{#snippet header()}
-			Admin Controls
-		{/snippet}
+		<CardHeader>Admin Controls</CardHeader>
 
 		<ul>
 			<li>

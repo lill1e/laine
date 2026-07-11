@@ -6,6 +6,7 @@ export class Player {
 	constructor(id: string, username: string) {
 		this.id = id;
 		this.username = username;
+		Player.#CACHE.set(id, this);
 	}
 
 	static getOrCreate(id: string, username: string): Player {

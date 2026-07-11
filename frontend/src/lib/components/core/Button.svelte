@@ -6,20 +6,32 @@
 		class?: ClassValue;
 		children: Snippet;
 		type?: 'default' | 'primary' | 'icon' | 'link';
+		outlined?: boolean;
 		onclick?: MouseEventHandler<HTMLButtonElement>;
 	}
 
-	const { type = 'default', onclick, children, class: className, ...rest }: Props = $props();
+	const {
+		type = 'default',
+		outlined,
+		onclick,
+		children,
+		class: className,
+		...rest
+	}: Props = $props();
 </script>
 
-<button {onclick} class={[type, className]} {...rest}>{@render children()}</button>
+<button {onclick} class={[type, className, outlined && 'outlined']} {...rest}
+	>{@render children()}</button
+>
 
 <style>
 	button {
+		--text: #222;
+		--background: #eee;
+		--background-hover: #ccc;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		color: #222;
 		border: 0;
 		outline: none;
 		cursor: pointer;
@@ -30,12 +42,16 @@
 		border-radius: 100px;
 		font-size: 13px;
 
+		color: var(--text);
+		background: var(--background);
+		&:hover {
+			background: var(--background-hover);
+		}
+
 		&.primary {
-			color: #fff;
-			background: #3772df;
-			&:hover {
-				background: #305bc8;
-			}
+			--text: #fff;
+			--background: #3772df;
+			--background-hover: #305bc8;
 		}
 
 		&.link {

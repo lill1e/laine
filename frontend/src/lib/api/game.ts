@@ -22,11 +22,29 @@ export async function getGames(): Promise<Game[]> {
 }
 
 export class Game {
+	static readonly #CACHE: Map<string, Game> = new Map();
 	readonly date: string;
 	readonly entries: Entry[];
+	readonly id: string;
+	nth: number = 0;
+
 	constructor(data: APIGame) {
 		this.date = data.date;
 		this.entries = data.entries.map((entry) => new Entry(entry));
+		this.id = 'TEMP';
+		Game.#CACHE.set('TEMP', this);
+	}
+
+	static async getById(id: string): Promise<Game | undefined> {
+		const cached = Game.getCached(id);
+		if (cached) return cached;
+
+		await getGames();
+		return Game.getCached(id);
+	}
+
+	static getCached(id: string): Game | undefined {
+		return Game.#CACHE.get(id);
 	}
 }
 

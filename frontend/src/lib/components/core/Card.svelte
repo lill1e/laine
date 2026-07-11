@@ -2,7 +2,6 @@
 	import type { Snippet } from 'svelte';
 
 	type Props = {
-		header: Snippet;
 		children: Snippet;
 	} & (
 		| {
@@ -18,7 +17,6 @@
 </script>
 
 <div class="card">
-	<div class="header">{@render props.header()}</div>
 	<div class="body">{@render props.children()}</div>
 	{#if props.showActions}
 		<div class="actions">{@render props.actions()}</div>
@@ -37,23 +35,9 @@
 
 		@media screen and (min-width: 700px) {
 			width: 100%;
-			max-width: 700px;
+			/* We actually allow some slight leeway */
+			max-width: 720px;
 		}
-	}
-
-	.header {
-		margin-right: 12px;
-		margin-left: 16px;
-		display: flex;
-		height: 50px;
-		align-items: center;
-		justify-content: space-between;
-		padding-top: 16px;
-		padding-bottom: 15px;
-		font-size: 16px;
-		font-weight: 500;
-		color: #151617;
-		border-bottom: 1px dotted var(--color-neutral-200, #dcdddf);
 	}
 
 	.body {
