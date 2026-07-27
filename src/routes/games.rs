@@ -5,7 +5,7 @@ use axum::{
     Json, Router,
     extract::{Path, State},
     http::StatusCode,
-    routing::get,
+    routing::{get, post},
 };
 use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
@@ -15,10 +15,10 @@ use crate::router::AppState;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Frame {
-    pub roll_one: i32,
-    pub roll_two: Option<i32>,
+    pub roll_one: i16,
+    pub roll_two: Option<i16>,
     pub split: bool,
-    pub extra_roll: Option<i32>,
+    pub extra_roll: Option<i16>,
 }
 
 #[derive(Serialize, FromRow, Debug)]
@@ -57,6 +57,8 @@ pub fn router() -> Router<AppState> {
     Router::new()
         .route("/all", get(get_games))
         .route("/{date}", get(get_games_by_date))
+        .route("/", post(add_game))
+        .route("/{game_id}/entry", post(add_entry))
 }
 
 async fn get_game_entries(games: Vec<Game>, entries: Vec<Entry>) -> Result<HashMap<i32, GameData>> {
@@ -132,4 +134,87 @@ async fn get_games_by_date(
         group by g.id, g.date, e.id, e.player, e.alias, u.username
         "#, date).fetch_all(&state.db).await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?,
     ).await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?))
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct GameBody {
+    date: NaiveDate,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct EntryBody {
+    player: String,
+    alias: Option<String>,
+    frames: Vec<Frame>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct EntryDBResult {
+    id: i32,
+    game: i32,
+    player: String,
+    alias: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct EntryResult {
+    id: i32,
+    game: i32,
+    player: String,
+    alias: Option<String>,
+    frames: Vec<Frame>,
+}
+
+async fn add_game(
+    State(state): State<AppState>,
+    Json(req): Json<GameBody>,
+) -> Result<Json<Game>, StatusCode> {
+    Ok(Json(
+        sqlx::query_as!(
+            Game,
+            "insert into game(date) values($1) returning *",
+            req.date
+        )
+        .fetch_one(&state.db)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?,
+    ))
+}
+
+async fn add_entry(
+    State(state): State<AppState>,
+    Path(game): Path<i32>,
+    Json(req): Json<EntryBody>,
+) -> Result<Json<EntryResult>, StatusCode> {
+    if req.frames.len() != 10 {
+        Err(StatusCode::BAD_REQUEST)
+    } else {
+        let entry = sqlx::query_as!(
+            EntryDBResult,
+            "insert into entry(game, player, alias) values($1, $2, $3) returning *",
+            game,
+            req.player,
+            req.alias
+        )
+        .fetch_one(&state.db)
+        .await
+        .map_err(|_| StatusCode::NOT_FOUND)?;
+        let mut frame_counter = 1;
+        let mut frames: Vec<Frame> = Vec::new();
+        for frame in req.frames {
+            let new_frame = sqlx::query_as!(
+                Frame,
+                "insert into frame(entry, roll_one, roll_two, split, extra_roll, frame_number) values($1, $2, $3, $4, $5, $6) returning roll_one, roll_two, split, extra_roll", entry.id, frame.roll_one, frame.roll_two, frame.split, frame.extra_roll, frame_counter
+            ).fetch_one(&state.db).await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+            frames.push(new_frame);
+            frame_counter += 1;
+        }
+        Ok(Json(EntryResult {
+            id: entry.id,
+            game: entry.game,
+            player: entry.player,
+            alias: entry.alias,
+            frames: frames,
+        }))
+    }
 }
