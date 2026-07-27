@@ -1,5 +1,6 @@
 use sqlx::postgres::PgPoolOptions;
 use tokio::net::TcpListener;
+use tower_http::cors::{Any, CorsLayer};
 
 use crate::router::AppState;
 
@@ -19,7 +20,7 @@ async fn main() {
         .await
         .unwrap();
     sqlx::migrate!().run(&pool).await.unwrap();
-    let app = router::app(AppState { db: pool });
+    let app = router::app(AppState { db: pool }).layer(CorsLayer::new().allow_origin(Any));
     let listener = TcpListener::bind("0.0.0.0:5174")
         .await
         .expect("Failed to bind service to port");
