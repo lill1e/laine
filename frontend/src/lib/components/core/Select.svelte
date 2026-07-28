@@ -1,8 +1,8 @@
 <script lang="ts">
-	const { children } = $props();
+	let { value = $bindable(), placeholder, children } = $props();
 </script>
 
-<select>
+<select bind:value {placeholder}>
 	{@render children()}
 </select>
 

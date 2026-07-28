@@ -8,6 +8,7 @@
 		type?: 'default' | 'primary' | 'icon' | 'link';
 		outlined?: boolean;
 		onclick?: MouseEventHandler<HTMLButtonElement>;
+		disabled?: boolean;
 	}
 
 	const {
@@ -44,8 +45,15 @@
 
 		color: var(--text);
 		background: var(--background);
+
 		&:hover {
 			background: var(--background-hover);
+		}
+
+		&:disabled {
+			cursor: not-allowed;
+			background: #fff;
+			color: #777;
 		}
 
 		&.primary {

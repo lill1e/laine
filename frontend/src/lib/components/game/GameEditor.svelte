@@ -61,7 +61,7 @@
 				</Button>
 			</div>
 			<div class="info">
-				<PlayerSelector />
+				<PlayerSelector bind:value={game.entries[row].player} />
 				<TextInput bind:value={game.entries[row].alias!} type="small" placeholder="Alias" />
 			</div>
 		</div>

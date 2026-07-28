@@ -1,5 +1,6 @@
+import type { EditableGame } from '$lib/util/edit';
 import { frameTotal } from '$lib/util/frames';
-import { get } from './core';
+import { get, post } from './core';
 import { type APIFrame, Frame } from './frame';
 import { Player } from './player';
 
@@ -17,8 +18,15 @@ interface APIEntry {
 }
 
 export async function getGames(): Promise<Game[]> {
-	const response: APIGame[] = await get(`/games/all`);
-	return Object.values(response).map((x) => new Game(x));
+	const games: Record<string, APIGame> = await get(`/games/all`);
+	return await Promise.all(
+		Object.values(games).map(async (api) => {
+			const entries = await Promise.all(
+				api.entries.map(async (entry) => new Entry(entry, await Player.getOrFetch(entry.player)))
+			);
+			return new Game(api, entries);
+		})
+	);
 }
 
 export class Game {
@@ -28,9 +36,9 @@ export class Game {
 	readonly id: string;
 	nth: number = 0;
 
-	constructor(data: APIGame) {
-		this.date = data.date;
-		this.entries = data.entries.map((entry) => new Entry(entry));
+	constructor(api: APIGame, entries: Entry[]) {
+		this.date = api.date;
+		this.entries = entries;
 		this.id = 'TEMP';
 		Game.#CACHE.set('TEMP', this);
 	}
@@ -52,8 +60,8 @@ export class Entry {
 	readonly player: Player;
 	readonly alias: string;
 	readonly frames: Frame[];
-	constructor(data: APIEntry) {
-		this.player = Player.getOrCreate(data.player, data.username);
+	constructor(data: APIEntry, player: Player) {
+		this.player = player;
 		this.alias = data.alias;
 
 		this.frames = data.frames.reduce((arr, api, index) => {
@@ -86,4 +94,30 @@ export class Entry {
 			return arr;
 		}, [] as Frame[]);
 	}
+}
+
+export async function createNewGame(game: EditableGame): Promise<number> {
+	interface CreateResult {
+		id: number;
+	}
+
+	const createResult: CreateResult = await post(`/games`, {
+		date: game.date
+	});
+	const { id } = createResult;
+
+	for (const entry of game.entries) {
+		await post(`/games/${id}/entry`, {
+			player: entry.player!.id,
+			alias: entry.alias,
+			frames: entry.frames.map((x) => ({
+				roll_one: x.rollOne,
+				roll_two: x.rollTwo,
+				split: x.split,
+				extra_roll: x.extraRoll
+			}))
+		});
+	}
+
+	return id;
 }
