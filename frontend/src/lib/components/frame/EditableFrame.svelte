@@ -58,17 +58,29 @@
 			case 'rollOne':
 				return rollTwoInput ? 'rollTwo' : 'next';
 			case 'rollTwo':
-				return isLastFrame ? 'extraRoll' : 'next';
+				return isLastFrame && extraRollInput ? 'extraRoll' : 'next';
 			case 'extraRoll':
 				return 'next';
 		}
+	}
+
+	async function focusBefore(prop: RollProp) {
+		// Wait for UI and other inputs to update
+		await tick();
+		focus(before(prop));
+	}
+
+	async function focusAfter(prop: RollProp) {
+		// Wait for UI and other inputs to update
+		await tick();
+		focus(after(prop));
 	}
 
 	function generateInputHandler(
 		prop: RollProp,
 		handler: (parsed: Token) => void
 	): (event: KeyboardEvent) => void {
-		return (event: KeyboardEvent) => {
+		return async (event: KeyboardEvent) => {
 			// Ignore any keypresses we dno't want to handle
 			if (event.ctrlKey || event.metaKey) return null;
 			if (event.key === 'Backspace') {
@@ -76,7 +88,7 @@
 
 				// Move back if its already empty
 				if (frame[prop] === null) {
-					focus(before(prop));
+					await focusBefore(prop);
 				} else {
 					frame[prop] = null;
 				}
@@ -86,11 +98,12 @@
 
 			if (event.key === 'ArrowLeft') {
 				event.preventDefault();
-				focus(before(prop));
+				await focusBefore(prop);
 				return;
 			} else if (event.key === 'ArrowRight') {
 				event.preventDefault();
-				focus(after(prop));
+
+				await focusAfter(prop);
 				return;
 			}
 
@@ -104,32 +117,30 @@
 			const parsed = parseToken(event.key);
 			if (parsed !== null) {
 				handler(parsed);
-				focus(after(prop));
+
+				await focusAfter(prop);
 			}
 		};
 	}
 
 	function focus(kind: FocusKind) {
-		// need to await next UI tick so new inputs exist in DOM
-		tick().then(() => {
-			switch (kind) {
-				case 'next':
-					next?.selectFirst();
-					break;
-				case 'prev':
-					prev?.selectLast();
-					break;
-				case 'rollOne':
-					rollOneInput?.focus();
-					break;
-				case 'rollTwo':
-					rollTwoInput?.select();
-					break;
-				case 'extraRoll':
-					extraRollInput?.focus();
-					break;
-			}
-		});
+		switch (kind) {
+			case 'next':
+				next?.selectFirst();
+				break;
+			case 'prev':
+				prev?.selectLast();
+				break;
+			case 'rollOne':
+				rollOneInput?.focus();
+				break;
+			case 'rollTwo':
+				rollTwoInput?.select();
+				break;
+			case 'extraRoll':
+				extraRollInput?.focus();
+				break;
+		}
 	}
 
 	const rollOneHandler = generateInputHandler('rollOne', (parsed) => {
@@ -212,7 +223,7 @@
 	input {
 		width: 12px;
 		border: 0;
-		border-bottom: 1px solid var(--gray-2);
+		border-bottom: 1px solid var(--gray-3);
 		text-align: inherit;
 		background: transparent;
 		margin-right: 1px;

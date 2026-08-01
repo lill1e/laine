@@ -14,6 +14,7 @@
 		:root {
 			--gray-1: #f1f2f3;
 			--gray-2: #cbccce;
+			--gray-3: #acacac;
 			--link: rgb(0, 102, 204);
 		}
 

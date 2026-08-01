@@ -19,17 +19,12 @@
 
 	const humanReadable = $derived(toHumanReadableFrameLike(frame));
 
-	// If we render with BLANKS (e.g. EditableFrame), we want to render "as if" we have a second roll,
-	// even though we don't. This means that the first roll appears at the top-left position, NOT the top-right,
-	// as it would for only having roll one.
-	// BUT if the first roll is a STRIKE, then we DON'T want to render as if it is roll two.
-	// This logic does NOT apply on the final frame, though.
 	const renderAsHavingRollTwo = $derived(
 		doRenderBlanks && (frame.rollOne !== 10 || doRenderAsLast)
 	);
 
 	const renderAsHavingExtraRoll = $derived(
-		doRenderBlanks && frame.rollTwo === 10 && doRenderAsLast
+		doRenderBlanks && frame.rollOne === 10 && doRenderAsLast
 	);
 
 	const showRollOne = $derived(!!(humanReadable.rollOne || doRenderBlanks));
