@@ -3,6 +3,7 @@
 	import { page } from '$app/state';
 
 	import logo from '$lib/assets/logo-full.webp';
+	import { CircleUserRound } from '@lucide/svelte';
 </script>
 
 <nav>
@@ -15,6 +16,12 @@
 	<div class="links">
 		<a aria-current={page.url.pathname === '/'} href={resolve('/')}>Games</a>
 		<a aria-current={page.url.pathname === '/admin'} href={resolve('/admin')}>Admin</a>
+	</div>
+
+	<div class="user">
+		<a href="#TODO" class="login-button">
+			<CircleUserRound />
+		</a>
 	</div>
 </nav>
 
@@ -82,6 +89,7 @@
 		display: inline-block;
 		display: flex;
 		align-items: center;
+		flex-grow: 1;
 
 		&:hover > a {
 			color: #bbb;
@@ -111,5 +119,15 @@
 				border-top: 4px solid transparent;
 			}
 		}
+	}
+
+	.user {
+		display: flex;
+		align-items: center;
+		padding-right: 10px;
+	}
+
+	.login-button {
+		color: #fff;
 	}
 </style>
