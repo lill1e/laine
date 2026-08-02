@@ -1,6 +1,6 @@
 use axum::Router;
 
-use crate::routes::games;
+use crate::routes::{games, users};
 
 #[derive(Clone)]
 pub struct AppState {
@@ -10,5 +10,6 @@ pub struct AppState {
 pub fn app(state: AppState) -> Router {
     Router::new()
         .nest("/games", games::router())
+        .nest("/users", users::router())
         .with_state(state)
 }
