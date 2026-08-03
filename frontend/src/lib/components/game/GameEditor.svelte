@@ -56,7 +56,8 @@
 	{#snippet player(_player, _alias, row)}
 		<div class="player">
 			<div class="actions">
-				<Button type="icon">
+				<!-- Disable removing the last entry -->
+				<Button type="icon" disabled={game.entries.length === 1}>
 					<Trash2 onclick={() => removePlayer(row)} />
 				</Button>
 			</div>

@@ -41,6 +41,20 @@ export function toEditableGame(game: Game): EditableGame {
 export function newEditableGame(): EditableGame {
 	return {
 		date: null,
-		entries: []
+		entries: [
+			{
+				alias: null,
+				player: null,
+				frames: Array.from({ length: 10 })
+					.fill(0)
+					.map(() => ({
+						rollOne: null,
+						rollTwo: null,
+						extraRoll: null,
+						split: false,
+						total: 0
+					}))
+			}
+		]
 	};
 }

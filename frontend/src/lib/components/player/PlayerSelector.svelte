@@ -1,14 +1,19 @@
-<script>
+<script lang="ts">
 	import { Player } from '$lib/api/player';
 	import Select from '$lib/components/core/Select.svelte';
 
-	let { value = $bindable() } = $props();
+	interface Props {
+		value: Player | undefined;
+	}
+
+	let { value = $bindable() }: Props = $props();
 </script>
 
-<Select bind:value placeholder="Select player">
+<Select bind:value={() => value?.id ?? '', (v) => (value = Player.getCached(v)!)}>
+	<option disabled hidden selected value="">Player...</option>
 	{#await Player.getAllPlayers() then players}
 		{#each players as player (player.id)}
-			<option value={player}>{player.username}</option>
+			<option value={player.id}>{player.username}</option>
 		{/each}
 	{/await}
 </Select>
