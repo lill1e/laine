@@ -10,6 +10,15 @@
 	import type { PageProps } from './$types';
 
 	const { data }: PageProps = $props();
+
+	let enableDateFilter = $state(false);
+	let dateFilter: string = $state(new Date().toString());
+
+	const filtered = $derived(
+		enableDateFilter && dateFilter
+			? data.sessions.filter((x) => x.date === dateFilter)
+			: data.sessions
+	);
 </script>
 
 <CardColumns>
@@ -18,17 +27,22 @@
 			<CardHeader>Filters...</CardHeader>
 
 			<Field>
-				<Checkbox />
+				<Checkbox bind:checked={enableDateFilter} />
 				<p>Date:</p>
 			</Field>
-			<DateInput disabled />
+			<DateInput disabled={!enableDateFilter} bind:value={dateFilter} />
 		</Card>
 	</CardColumn>
 
 	<CardColumn>
 		<!-- TODO: date is a very bad key -->
-		{#each data.sessions as session (session.date)}
+		{#each filtered as session (session.date)}
 			<SessionCard {session} />
 		{/each}
+		{#if filtered.length === 0}
+			<Card>
+				<p>No games found matching filters</p>
+			</Card>
+		{/if}
 	</CardColumn>
 </CardColumns>
