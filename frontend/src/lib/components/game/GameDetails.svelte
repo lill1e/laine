@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import type { Game } from '$lib/api/game';
 	import { toEditableGame, type EditableGame as EditableGameType } from '$lib/util/edit';
 	import Button from '../core/Button.svelte';
@@ -33,7 +34,7 @@
 <ScoreTable entries={game.entries}>
 	{#snippet player(player, alias, _row)}
 		<div class="player">
-			<span class="username">{player.username}</span>
+			<a class="username" href={resolve(`/player/${player.id}`)}>{player.username}</a>
 			<span class="alias">{alias}</span>
 		</div>
 	{/snippet}

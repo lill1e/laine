@@ -20,11 +20,13 @@ interface APIEntry {
 export async function getGames(): Promise<Game[]> {
 	const games: Record<string, APIGame> = await get(`/games/all`);
 	return await Promise.all(
-		Object.values(games).map(async (api) => {
+		Object.entries(games).map(async ([id, api]) => {
+			const cached = Game.getCached(id);
+			if (cached) return cached;
 			const entries = await Promise.all(
 				api.entries.map(async (entry) => new Entry(entry, await Player.getOrFetch(entry.player)))
 			);
-			return new Game(api, entries);
+			return new Game(id, api, entries);
 		})
 	);
 }
@@ -36,11 +38,11 @@ export class Game {
 	readonly id: string;
 	nth: number = 0;
 
-	constructor(api: APIGame, entries: Entry[]) {
+	constructor(id: string, api: APIGame, entries: Entry[]) {
 		this.date = api.date;
 		this.entries = entries;
-		this.id = 'TEMP';
-		Game.#CACHE.set('TEMP', this);
+		this.id = id;
+		Game.#CACHE.set(id, this);
 	}
 
 	static async getById(id: string): Promise<Game | undefined> {

@@ -27,6 +27,10 @@ export class Player {
 		Player.#CACHE.set(api.id, this);
 	}
 
+	get avatarUrl(): string {
+		return `https://cdn.discordapp.com/avatars/${this.id}/${this.avatar}.png`;
+	}
+
 	static async getOrCreate(api: APIPlayer): Promise<Player> {
 		if (this.#CACHE.has(api.id)) return this.#CACHE.get(api.id)!;
 		return new Player(api);
