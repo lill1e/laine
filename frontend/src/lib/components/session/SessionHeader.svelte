@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Player } from '$lib/api/player';
 	import type { Session } from '$lib/api/session';
 	import { formatDateString } from '$lib/util/format';
 
@@ -8,18 +7,7 @@
 	}
 
 	const { session }: Props = $props();
-
-	const totals = $derived(session.getTotals());
-	const winnerId = $derived.by(() => {
-		let winner;
-		for (const id in totals) {
-			if (!winner || totals[id] > totals[winner]) {
-				winner = id;
-			}
-		}
-		return winner;
-	});
-	const winner = $derived(Player.getCached(winnerId!)!);
+	const { totals, winner } = $derived(await session.stats());
 </script>
 
 <header>
@@ -35,7 +23,7 @@
 		</div>
 		<div class="winner-info">
 			<span class="winner-name">{winner.username}</span>
-			<span class="winner-stats">0 games won</span>
+			<span class="winner-stats">{(await winner.stats()).sessionsWon} sessions won</span>
 		</div>
 	</div>
 </header>

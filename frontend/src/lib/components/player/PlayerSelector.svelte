@@ -3,7 +3,7 @@
 	import Select from '$lib/components/core/Select.svelte';
 
 	interface Props {
-		value: Player | undefined;
+		value: Player | null;
 	}
 
 	let { value = $bindable() }: Props = $props();

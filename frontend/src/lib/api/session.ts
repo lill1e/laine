@@ -1,6 +1,12 @@
 // A Session is multiple games played on the same Date
 
 import { getGames, type Game } from './game';
+import { Player } from './player';
+
+interface Stats {
+	totals: Record<string, number>;
+	winner: Player;
+}
 
 // would be nice if the API supported this natively
 export class Session {
@@ -23,16 +29,27 @@ export class Session {
 		return Session.#CACHE.get(date);
 	}
 
-	getTotals(): Record<string, number> {
-		const out: Record<string, number> = {};
+	async stats(): Promise<Stats> {
+		const totals: Record<string, number> = {};
 
 		for (const game of this.games) {
 			for (const entry of game.entries) {
-				out[entry.player.id] = entry.frames.at(-1)?.total ?? 0;
+				totals[entry.player.id] = entry.frames.at(-1)?.total ?? 0;
 			}
 		}
 
-		return out;
+		let winnerId;
+		for (const id in totals) {
+			if (!winnerId || totals[id] > totals[winnerId]) {
+				winnerId = id;
+			}
+		}
+
+		const winner = Player.getCached(winnerId!)!;
+		return {
+			totals,
+			winner
+		};
 	}
 }
 
@@ -52,5 +69,7 @@ export async function getSessions(): Promise<Session[]> {
 		{} as Record<string, Game[]>
 	);
 
-	return Object.keys(grouped).map((date) => new Session(date, grouped[date]));
+	return await Promise.all(
+		Object.keys(grouped).map(async (date) => new Session(date, grouped[date]))
+	);
 }

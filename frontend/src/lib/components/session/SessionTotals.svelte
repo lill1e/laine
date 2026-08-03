@@ -8,7 +8,7 @@
 	}
 
 	const { session }: Props = $props();
-	const totals = $derived(session.getTotals());
+	const { totals } = $derived(await session.stats());
 	// We are assuming they must be cached
 	const players = $derived(Object.keys(totals).map((id) => Player.getCached(id)!));
 </script>

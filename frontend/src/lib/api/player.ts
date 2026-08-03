@@ -1,10 +1,15 @@
 import { get } from './core';
+import { getSessions } from './session';
 
 interface APIPlayer {
 	id: string;
 	username: string;
 	elevated: boolean;
 	avatar: string;
+}
+
+interface Stats {
+	sessionsWon: number;
 }
 
 export class Player {
@@ -22,7 +27,7 @@ export class Player {
 		Player.#CACHE.set(api.id, this);
 	}
 
-	static getOrCreate(api: APIPlayer): Player {
+	static async getOrCreate(api: APIPlayer): Promise<Player> {
 		if (this.#CACHE.has(api.id)) return this.#CACHE.get(api.id)!;
 		return new Player(api);
 	}
@@ -34,10 +39,21 @@ export class Player {
 
 	static async getAllPlayers(): Promise<Player[]> {
 		const response: APIPlayer[] = await get(`/users/all`);
-		return response.map((x) => Player.getOrCreate(x));
+		return await Promise.all(response.map((x) => Player.getOrCreate(x)));
 	}
 
 	static getCached(id: string): Player | undefined {
 		return this.#CACHE.get(id);
+	}
+
+	async stats(): Promise<Stats> {
+		let sessionsWon = 0;
+		for (const session of await getSessions()) {
+			if ((await session.stats()).winner === this) sessionsWon++;
+		}
+
+		return {
+			sessionsWon
+		};
 	}
 }
