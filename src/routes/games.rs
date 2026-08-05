@@ -15,6 +15,7 @@ use crate::router::AppState;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Frame {
+    pub id: i32,
     pub roll_one: i16,
     pub roll_two: Option<i16>,
     pub split: bool,
@@ -103,7 +104,7 @@ async fn get_games(
         sqlx::query_as!(Entry,
         r#"
         select g.id as game_id, g.date as game_date, e.id as entry_id, e.player, e.alias, u.username,
-               json_agg(json_build_object('roll_one', roll_one, 'roll_two', roll_two, 'split', split, 'extra_roll', extra_roll) order by f.frame_number) as "frames!: sqlx::types::Json<Vec<Frame>>"
+               json_agg(json_build_object('id', f.id, 'roll_one', roll_one, 'roll_two', roll_two, 'split', split, 'extra_roll', extra_roll) order by f.frame_number) as "frames!: sqlx::types::Json<Vec<Frame>>"
         from game g
         join entry e on g.id = e.game
         join users u on u.id = e.player
@@ -125,7 +126,7 @@ async fn get_games_by_date(
         sqlx::query_as!(Entry,
         r#"
         select g.id as game_id, g.date as game_date, e.id as entry_id, e.player, e.alias, u.username,
-               json_agg(json_build_object('roll_one', roll_one, 'roll_two', roll_two, 'split', split, 'extra_roll', extra_roll) order by f.frame_number) as "frames!: sqlx::types::Json<Vec<Frame>>"
+               json_agg(json_build_object('id', f.id, 'roll_one', roll_one, 'roll_two', roll_two, 'split', split, 'extra_roll', extra_roll) order by f.frame_number) as "frames!: sqlx::types::Json<Vec<Frame>>"
         from game g
         join entry e on g.id = e.game
         join users u on u.id = e.player
@@ -204,7 +205,7 @@ async fn add_entry(
         for frame in req.frames {
             let new_frame = sqlx::query_as!(
                 Frame,
-                "insert into frame(entry, roll_one, roll_two, split, extra_roll, frame_number) values($1, $2, $3, $4, $5, $6) returning roll_one, roll_two, split, extra_roll", entry.id, frame.roll_one, frame.roll_two, frame.split, frame.extra_roll, frame_counter
+                "insert into frame(entry, roll_one, roll_two, split, extra_roll, frame_number) values($1, $2, $3, $4, $5, $6) returning id, roll_one, roll_two, split, extra_roll", entry.id, frame.roll_one, frame.roll_two, frame.split, frame.extra_roll, frame_counter
             ).fetch_one(&state.db).await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
             frames.push(new_frame);
             frame_counter += 1;
