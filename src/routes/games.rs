@@ -143,10 +143,18 @@ struct GameBody {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+struct EntryFrame {
+    pub roll_one: i16,
+    pub roll_two: Option<i16>,
+    pub split: bool,
+    pub extra_roll: Option<i16>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 struct EntryBody {
     player: String,
     alias: Option<String>,
-    frames: Vec<Frame>,
+    frames: Vec<EntryFrame>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
