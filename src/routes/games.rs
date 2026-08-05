@@ -5,7 +5,7 @@ use axum::{
     Json, Router,
     extract::{Path, State},
     http::StatusCode,
-    routing::{get, post},
+    routing::{get, patch, post},
 };
 use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
@@ -60,6 +60,7 @@ pub fn router() -> Router<AppState> {
         .route("/date/{date}", get(get_games_by_date))
         .route("/", post(add_game))
         .route("/{game_id}/entry", post(add_entry))
+        .route("/{game_id}", patch(edit_entry))
 }
 
 async fn get_game_entries(games: Vec<Game>, entries: Vec<Entry>) -> Result<HashMap<i32, GameData>> {
@@ -226,4 +227,30 @@ async fn add_entry(
             frames: frames,
         }))
     }
+}
+
+async fn edit_entry(
+    State(state): State<AppState>,
+    Json(req): Json<GameEntry>,
+) -> Result<StatusCode, StatusCode> {
+    sqlx::query!(
+        "update entry set player = $1, alias = $2 where id = $3",
+        req.player,
+        req.alias,
+        req.entry_id
+    )
+    .execute(&state.db)
+    .await
+    .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    for frame in req.frames {
+        sqlx::query!(
+            "update frame set roll_one = $1, roll_two = $2, split = $3, extra_roll = $4 where id = $5",
+            frame.roll_one,
+            frame.roll_two,
+            frame.split,
+            frame.extra_roll,
+            frame.id
+        ).execute(&state.db).await.map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+    }
+    Ok(StatusCode::NO_CONTENT)
 }
