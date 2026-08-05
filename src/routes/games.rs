@@ -57,7 +57,7 @@ pub struct GameData {
 pub fn router() -> Router<AppState> {
     Router::new()
         .route("/all", get(get_games))
-        .route("/{date}", get(get_games_by_date))
+        .route("/date/{date}", get(get_games_by_date))
         .route("/", post(add_game))
         .route("/{game_id}/entry", post(add_entry))
 }
