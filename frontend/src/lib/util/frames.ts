@@ -70,7 +70,7 @@ function stringifyFrameNumber(value: number): string {
 export function toHumanReadableFrameLike(frame: FrameLike): HumanReadableFrameLike {
 	const rollOne = frame.rollOne !== null ? stringifyFrameNumber(frame.rollOne) : null;
 	let rollTwo = frame.rollTwo !== null ? stringifyFrameNumber(frame.rollTwo) : null;
-	const extraRoll = frame.extraRoll !== null ? stringifyFrameNumber(frame.extraRoll) : null;
+	let extraRoll = frame.extraRoll !== null ? stringifyFrameNumber(frame.extraRoll) : null;
 
 	if (
 		frame.rollOne !== null &&
@@ -79,6 +79,20 @@ export function toHumanReadableFrameLike(frame: FrameLike): HumanReadableFrameLi
 		frame.rollOne + frame.rollTwo === 10
 	) {
 		rollTwo = '/';
+	}
+
+	// Extra roll spares show up when:
+	// 1. the first roll is a strike
+	// 2. the second roll is NOT a strike
+	// 3. the second + extra == 10
+	if (
+		frame.extraRoll !== null &&
+		frame.rollTwo !== null &&
+		frame.rollOne === 10 &&
+		frame.rollTwo !== 10 &&
+		frame.extraRoll + frame.rollTwo === 10
+	) {
+		extraRoll = '/';
 	}
 
 	return {

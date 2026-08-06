@@ -24,7 +24,8 @@
 	);
 
 	const renderAsHavingExtraRoll = $derived(
-		doRenderBlanks && frame.rollOne === 10 && doRenderAsLast
+		// Renders if it is the last frame, with blanks, and the first two are at least a   spare (one + two >= 10)
+		doRenderBlanks && doRenderAsLast && (frame.rollOne ?? 0) + (frame.rollTwo ?? 0) >= 10
 	);
 
 	const showRollOne = $derived(!!(humanReadable.rollOne || doRenderBlanks));

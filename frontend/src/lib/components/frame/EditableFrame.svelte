@@ -161,15 +161,33 @@
 			frame.rollTwo = parsed;
 			if (frame.rollOne !== null && !isLastFrame) {
 				frame.rollOne = Math.min(frame.rollOne, 10 - frame.rollTwo);
+			} else if (isLastFrame) {
+				const shouldHaveExtraRoll = (frame.rollOne ?? 0) + (frame.rollTwo ?? 0) >= 10;
+				if (!shouldHaveExtraRoll) {
+					frame.extraRoll = null;
+				} else if (frame.extraRoll !== null && frame.rollTwo !== 10) {
+					// We don't clear when rollTwo == 10 b/c all pins are reset - 10 more can be hit
+					frame.extraRoll = Math.min(frame.extraRoll, 10 - frame.rollTwo);
+				}
 			}
 		}
 	});
 
 	const extraRollHandler = generateInputHandler('extraRoll', (parsed) => {
-		// Spare is not possible on extra roll
-		if (parsed === '/') return;
+		if (parsed === '/') {
+			// A spare for the extra roll is ONLY valid if the FIRST roll is a strike
+			if (frame.rollOne !== 10) return;
 
-		frame.extraRoll = parsed;
+			frame.extraRoll = 10 - (frame.rollTwo ?? 0);
+			frame.rollTwo = 10 - frame.extraRoll;
+		} else {
+			frame.extraRoll = parsed;
+			// Don't want to adjust roll two if it is 10, as any value for extra roll is valid
+			// when the roll two equals 10
+			if (frame.rollTwo !== null && frame.rollTwo !== 10) {
+				frame.rollTwo = Math.min(frame.rollTwo, 10 - frame.extraRoll);
+			}
+		}
 	});
 
 	const focusInput: FocusEventHandler<HTMLInputElement> = (event) => {
