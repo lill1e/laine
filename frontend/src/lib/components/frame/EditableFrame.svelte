@@ -159,9 +159,13 @@
 			frame.rollOne = 10 - frame.rollTwo;
 		} else {
 			frame.rollTwo = parsed;
-			if (frame.rollOne !== null && !isLastFrame) {
+			// We don't want to adjust roll one if it's the last frame AND the first roll is 10,
+			// because two strikes in a row are valid for the final frame
+			if (frame.rollOne !== null && !(isLastFrame && frame.rollOne === 10)) {
 				frame.rollOne = Math.min(frame.rollOne, 10 - frame.rollTwo);
-			} else if (isLastFrame) {
+			}
+
+			if (isLastFrame) {
 				const shouldHaveExtraRoll = (frame.rollOne ?? 0) + (frame.rollTwo ?? 0) >= 10;
 				if (!shouldHaveExtraRoll) {
 					frame.extraRoll = null;
@@ -182,9 +186,12 @@
 			frame.rollTwo = 10 - frame.extraRoll;
 		} else {
 			frame.extraRoll = parsed;
-			// Don't want to adjust roll two if it is 10, as any value for extra roll is valid
-			// when the roll two equals 10
-			if (frame.rollTwo !== null && frame.rollTwo !== 10) {
+			if (
+				frame.rollOne !== null &&
+				frame.rollTwo !== null &&
+				frame.rollOne === 10 &&
+				frame.rollTwo !== 10
+			) {
 				frame.rollTwo = Math.min(frame.rollTwo, 10 - frame.extraRoll);
 			}
 		}
