@@ -36,7 +36,7 @@
 		@media screen and (min-width: 700px) {
 			width: 100%;
 			/* We actually allow some slight leeway */
-			max-width: 720px;
+			max-width: 780px;
 		}
 	}
 

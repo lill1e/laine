@@ -2,8 +2,10 @@
 	import type { FrameLikeTotalled } from '$lib/api/frame';
 	import { toHumanReadableFrameLike } from '$lib/util/frames';
 	import type { Snippet } from 'svelte';
+	import type { ClassValue } from 'svelte/elements';
 
 	interface Props {
+		class?: ClassValue;
 		frame: FrameLikeTotalled;
 		doRenderBlanks?: boolean;
 		doRenderAsLast?: boolean;
@@ -14,8 +16,16 @@
 		total: Snippet<[string]>;
 	}
 
-	const { frame, total, doRenderBlanks, doRenderAsLast, rollOne, rollTwo, extraRoll }: Props =
-		$props();
+	const {
+		class: cls,
+		frame,
+		total,
+		doRenderBlanks,
+		doRenderAsLast,
+		rollOne,
+		rollTwo,
+		extraRoll
+	}: Props = $props();
 
 	const humanReadable = $derived(toHumanReadableFrameLike(frame));
 
@@ -35,7 +45,7 @@
 	const showExtraRoll = $derived(!!(humanReadable.extraRoll || renderAsHavingExtraRoll));
 </script>
 
-<div class={['frame', showRollTwo && 'has-roll-two', showExtraRoll && 'has-extra-roll']}>
+<div class={['frame', showRollTwo && 'has-roll-two', showExtraRoll && 'has-extra-roll', cls]}>
 	{#if showRollOne}
 		<div class="roll-one">
 			{@render rollOne(humanReadable.rollOne ?? '')}
@@ -60,8 +70,9 @@
 	.frame {
 		display: grid;
 		grid-template-columns: 1fr;
-		aspect-ratio: 1;
-		min-width: 39px;
+		aspect-ratio: 2/3;
+		min-width: 25px;
+		min-height: 30px;
 
 		&.has-roll-two {
 			grid-template-columns: repeat(2, 1fr);

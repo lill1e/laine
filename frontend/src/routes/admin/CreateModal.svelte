@@ -34,7 +34,7 @@
 
 	{#snippet actions()}
 		<Button onclick={() => (show = false)}>Cancel</Button>
-	<Button disabled={!enabled} onclick={create} type="primary">Create</Button>
+		<Button disabled={!enabled} onclick={create} type="primary">Create</Button>
 	{/snippet}
 
 	<GameEditor {game} />

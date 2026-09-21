@@ -38,8 +38,8 @@
 			tbody > tr > td,
 			tbody > tr > th {
 				border-bottom: 1px solid var(--row-separator);
-				padding-left: 6px;
-				padding-right: 6px;
+				padding-left: 8px;
+				padding-right: 8px;
 				color: #6c6d6f;
 				width: 100%;
 			}

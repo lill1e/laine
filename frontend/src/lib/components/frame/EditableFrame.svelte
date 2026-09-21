@@ -202,7 +202,7 @@
 	};
 </script>
 
-<FrameBase {frame} doRenderBlanks doRenderAsLast={isLastFrame}>
+<FrameBase {frame} class="editable-frame" doRenderBlanks doRenderAsLast={isLastFrame}>
 	{#snippet rollOne(value)}
 		<input
 			bind:this={rollOneInput}
@@ -236,7 +236,7 @@
 	{#snippet total(value)}
 		<div class="total-container">
 			<div class="split-container">
-				<p>split?</p>
+				<p>split</p>
 				<input tabindex={-1} type="checkbox" />
 			</div>
 			<span>{value}</span>
@@ -245,6 +245,11 @@
 </FrameBase>
 
 <style>
+	:global(.frame.editable-frame) {
+		min-width: 40px;
+		min-height: 40px;
+	}
+
 	input {
 		width: 12px;
 		border: 0;
@@ -262,7 +267,7 @@
 	}
 
 	.split-container {
-		margin-top: 5px;
+		margin-top: 3px;
 		display: flex;
 		flex-flow: column;
 		align-items: flex-start;

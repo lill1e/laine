@@ -4,6 +4,8 @@
 
 	import logo from '$lib/assets/logo-full.webp';
 	import { CircleUserRound } from '@lucide/svelte';
+
+	let loggedIn = $state(false);
 </script>
 
 <nav>
@@ -19,9 +21,15 @@
 	</div>
 
 	<div class="user">
-		<a href="#TODO" class="login-button">
-			<CircleUserRound />
-		</a>
+		{#if loggedIn}
+			<a href={resolve('/admin')} class="admin">
+				<CircleUserRound />
+			</a>
+			<a href="#todo">Logout</a>
+		{:else}
+			<a href="#todo">Login</a>
+		{/if}
+		<a href="#todo" class="switcher" onclick={() => (loggedIn = !loggedIn)}>[Switch]</a>
 	</div>
 </nav>
 
@@ -125,9 +133,18 @@
 		display: flex;
 		align-items: center;
 		padding-right: 10px;
-	}
 
-	.login-button {
-		color: #fff;
+		a {
+			color: #0080ff;
+			margin-right: 5px;
+
+			&.switcher {
+				text-decoration: none;
+			}
+		}
+
+		.admin {
+			color: #fff;
+		}
 	}
 </style>
