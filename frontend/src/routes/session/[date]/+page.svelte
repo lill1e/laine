@@ -13,7 +13,7 @@
 </script>
 
 <main>
-	<SessionHeader session={data.session} />
+	<SessionHeader session={data.session} stats={data.stats} winnerStats={data.winnerStats} />
 	<Subnavigation>
 		<a href={resolve(`/session/${session.date}`)}>Box Score</a>
 	</Subnavigation>

@@ -1,13 +1,16 @@
 <script lang="ts">
-	import type { Session } from '$lib/api/session';
+	import type { Stats as PlayerStats } from '$lib/api/player';
+	import type { Session, Stats as SessionStats } from '$lib/api/session';
 	import { formatDateString } from '$lib/util/format';
 
 	interface Props {
 		session: Session;
+		stats: SessionStats;
+		winnerStats: PlayerStats;
 	}
 
-	const { session }: Props = $props();
-	const { totals, winner } = $derived(await session.stats());
+	const { session, stats, winnerStats }: Props = $props();
+	const { totals, winner } = $derived(stats);
 </script>
 
 <header>
@@ -23,7 +26,7 @@
 		</div>
 		<div class="winner-info">
 			<span class="winner-name">{winner.username}</span>
-			<span class="winner-stats">{(await winner.stats()).sessionsWon} sessions won</span>
+			<span class="winner-stats">{winnerStats.sessionsWon} sessions won</span>
 		</div>
 	</div>
 </header>

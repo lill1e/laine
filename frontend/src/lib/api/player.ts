@@ -8,7 +8,7 @@ interface APIPlayer {
 	avatar: string;
 }
 
-interface Stats {
+export interface Stats {
 	sessionsWon: number;
 }
 

@@ -3,7 +3,7 @@
 import { getGames, type Game } from './game';
 import { Player } from './player';
 
-interface Stats {
+export interface Stats {
 	totals: Record<string, number>;
 	winner: Player;
 }
