@@ -237,7 +237,11 @@
 		<div class="total-container">
 			<div class="split-container">
 				<p>split</p>
-				<input tabindex={-1} type="checkbox" />
+				<input
+					bind:checked={() => frame.split, (v) => (frame.split = v)}
+					tabindex={-1}
+					type="checkbox"
+				/>
 			</div>
 			<span>{value}</span>
 		</div>
